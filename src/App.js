@@ -328,7 +328,9 @@ class MatchGame extends Component {
         <div>
           <ul>
             {filterProject.map(eachImage => (
-              <li>{eachImage}</li>
+              <li key={eachImage.id}>
+                <img src={eachImage.thumbnailUrl} alt={eachImage.category} />
+              </li>
             ))}
           </ul>
         </div>
