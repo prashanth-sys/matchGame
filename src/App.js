@@ -275,7 +275,7 @@ class MatchGame extends Component {
   }
 
   render() {
-    const filterderProjects = this.onIMages()
+    const filterProject = this.filterderImages()
     return (
       <div className="bg-container">
         {' '}
@@ -326,7 +326,11 @@ class MatchGame extends Component {
           </button>
         </div>
         <div>
-          <ul>{filterderProjects}</ul>
+          <ul>
+            {filterProject.map(eachImage => (
+              <li>{eachImage}</li>
+            ))}
+          </ul>
         </div>
       </div>
     )
