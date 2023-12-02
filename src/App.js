@@ -263,11 +263,21 @@ class MatchGame extends Component {
   }
 
   componentDidMount = () => {
-    this.timerInterval = setInterval(this.updateTimer, 1000)
+    this.startGame()
   }
 
-  componentDidMount = () => {
+  componentWillUnmount = () => {
     clearInterval(this.timerInterval)
+  }
+
+  startGame = () => {
+    this.setState({
+      count: 0,
+      sec: 60,
+      matchImageURL: this.getRandomImage(),
+      isGameOver: false,
+    })
+    this.timerInterval = setInterval(this.updateTimer, 1000)
   }
 
   updateTimer = () => {
@@ -277,7 +287,7 @@ class MatchGame extends Component {
         sec: prevState - 1,
       }))
     } else {
-      clearInterval(this.timerInterval)
+      this.endGame()
     }
   }
 
@@ -290,14 +300,17 @@ class MatchGame extends Component {
   }
 
   onImage = event => {
-    const {matchImageURL} = this.state
+    const {matchImageURL, isGameOver} = this.state
+    if (isGameOver) {
+      return
+    }
     if (matchImageURL === event.imageUrl) {
       this.setState(prevState => ({
         count: prevState.count + 1,
+
         matchImageURL: this.getRandomImage(),
       }))
     } else {
-      this.setState({matchImageURL: this.getRandomImage()})
       this.endGame()
     }
   }
@@ -307,17 +320,10 @@ class MatchGame extends Component {
     this.setState({
       isGameOver: true,
     })
-    return (
-      <div className="game-container">
-        <button className="reset-button" type="button">
-          <img
-            src="https://assets.ccbp.in/frontend/react-js/match-game-play-again-img.png"
-            alt="shiva paravathi"
-          />{' '}
-          PLAY AGAIN
-        </button>
-      </div>
-    )
+  }
+
+  gameStart = () => {
+    this.startGame()
   }
 
   getRandomImage = () => {
@@ -333,7 +339,7 @@ class MatchGame extends Component {
 
   render() {
     const filterProject = this.filterderImages()
-    const {count, sec, matchImageURL} = this.state
+    const {count, sec, matchImageURL, isGameOver} = this.state
 
     return (
       <div className="bg-container">
@@ -408,6 +414,23 @@ class MatchGame extends Component {
             ))}
           </ul>
         </div>
+        {isGameOver ? (
+          <div className="game-container">
+            <h2>Game Over!</h2>
+            <p>Your Score: {count}</p>
+            <button
+              className="reset-button"
+              type="button"
+              onClick={this.gameStart}
+            >
+              <img
+                src="https://assets.ccbp.in/frontend/react-js/match-game-play-again-img.png"
+                alt="shiva paravathi"
+              />{' '}
+              PLAY AGAIN
+            </button>
+          </div>
+        ) : null}
       </div>
     )
   }
