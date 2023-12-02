@@ -254,7 +254,32 @@ const imagesList = [
 // Replace your code here
 
 class MatchGame extends Component {
-  state = {activeTabId: tabsList[0].tabId, count: 0, sec: 60, matchImageURL: ''}
+  state = {
+    activeTabId: tabsList[0].tabId,
+    count: 0,
+    sec: 60,
+    matchImageURL: '',
+    isGameOver: false,
+  }
+
+  componentDidMount = () => {
+    this.timerInterval = setInterval(this.updateTimer, 1000)
+  }
+
+  componentDidMount = () => {
+    clearInterval(this.timerInterval)
+  }
+
+  updateTimer = () => {
+    const {sec, isGameOver} = this.state
+    if (sec > 0 && !isGameOver) {
+      this.setState(prevState => ({
+        sec: prevState - 1,
+      }))
+    } else {
+      clearInterval(this.timerInterval)
+    }
+  }
 
   filterderImages = () => {
     const {activeTabId} = this.state
@@ -289,7 +314,7 @@ class MatchGame extends Component {
 
   render() {
     const filterProject = this.filterderImages()
-    const {count, sec} = this.state
+    const {count, sec, matchImageURL} = this.state
 
     return (
       <div className="bg-container">
@@ -325,7 +350,10 @@ class MatchGame extends Component {
         </ul>
         <div className="image-container">
           <img
-            src="https://assets.ccbp.in/frontend/react-js/match-game/orange-thumbnail-img.png"
+            src={
+              matchImageURL ||
+              'https://assets.ccbp.in/frontend/react-js/match-game/orange-thumbnail-img.png'
+            }
             className="image"
             alt="thumbnail"
           />
