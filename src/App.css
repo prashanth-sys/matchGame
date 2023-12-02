@@ -107,3 +107,8 @@ body {
   background-color: transparent;
   border-width: 0px;
 }
+.game-container {
+  background-image: url('https://assets.ccbp.in/frontend/react-js/match-game-score-card-lg-bg.png');
+  background-size: cover;
+  min-height: 90px;
+}

@@ -289,16 +289,35 @@ class MatchGame extends Component {
     return filterProject
   }
 
-  onImage = clickedImage => {
+  onImage = event => {
     const {matchImageURL} = this.state
-    if (matchImageURL === clickedImage.imageUrl) {
+    if (matchImageURL === event.imageUrl) {
       this.setState(prevState => ({
         count: prevState.count + 1,
         matchImageURL: this.getRandomImage(),
       }))
     } else {
       this.setState({matchImageURL: this.getRandomImage()})
+      this.endGame()
     }
+  }
+
+  endGame = () => {
+    clearInterval(this.timerInterval)
+    this.setState({
+      isGameOver: true,
+    })
+    return (
+      <div className="game-container">
+        <button className="reset-button" type="button">
+          <img
+            src="https://assets.ccbp.in/frontend/react-js/match-game-play-again-img.png"
+            alt="shiva paravathi"
+          />{' '}
+          PLAY AGAIN
+        </button>
+      </div>
+    )
   }
 
   getRandomImage = () => {
