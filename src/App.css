@@ -12,11 +12,12 @@ body {
 }
 .nav-container {
   display: flex;
-
+  justify-content: space-between;
   background-color: #2c0e3a;
   background-size: cover;
   height: 60px;
   padding: 10px;
+  list-style-type: none;
 }
 .main-heading {
   font-size: 15px;
@@ -85,4 +86,24 @@ body {
   font-size: 22px;
   font-weight: bold;
   margin-left: 25px;
+}
+.list-images {
+  display: flex;
+  flex-wrap: wrap;
+}
+.list-image {
+  width: 30%;
+  margin: 5px;
+}
+.list-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+.show-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+.button-image {
+  background-color: transparent;
+  border-width: 0px;
 }

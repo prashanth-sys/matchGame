@@ -251,8 +251,10 @@ const imagesList = [
 
 // Replace your code here
 
+// Replace your code here
+
 class MatchGame extends Component {
-  state = {activeTabId: tabsList[0].tabId}
+  state = {activeTabId: tabsList[0].tabId, count: 0, sec: 60, matchImageURL: ''}
 
   filterderImages = () => {
     const {activeTabId} = this.state
@@ -262,74 +264,99 @@ class MatchGame extends Component {
     return filterProject
   }
 
-  onFruitsIMages = tabId => {
-    this.setState({activeTabId: tabId})
+  onImage = clickedImage => {
+    const {matchImageURL} = this.state
+    if (matchImageURL === clickedImage.imageUrl) {
+      this.setState(prevState => ({
+        count: prevState.count + 1,
+        matchImageURL: this.getRandomImage(),
+      }))
+    } else {
+      this.setState({matchImageURL: this.getRandomImage()})
+    }
   }
 
-  onAnimalsImages = tabId => {
-    this.setState({activeTabId: tabId})
+  getRandomImage = () => {
+    const filterProject = this.filterderImages()
+
+    const randomImage = Math.floor(Math.random() * filterProject.length)
+    return filterProject[randomImage].imageUrl
   }
 
-  onPlacesImages = tabId => {
+  onFruiteAndAnimaAndPlaces = tabId => {
     this.setState({activeTabId: tabId})
   }
 
   render() {
     const filterProject = this.filterderImages()
+    const {count, sec} = this.state
+
     return (
       <div className="bg-container">
         {' '}
-        <div className="nav-container">
-          <img
-            src="https://assets.ccbp.in/frontend/react-js/match-game-website-logo.png"
-            alt="website logo"
-            className="logo-image"
-          />
-          <h1 className="main-heading">
-            Score:<span className="span">0</span>
-          </h1>
-          <img
-            src="https://assets.ccbp.in/frontend/react-js/match-game-timer-img.png"
-            alt="timer"
-            className="time-logo"
-          />
-          <h1 className="heading">sec</h1>
-        </div>
+        <ul className="nav-container">
+          <li>
+            <img
+              src="https://assets.ccbp.in/frontend/react-js/match-game-website-logo.png"
+              alt="website logo"
+              className="logo-image"
+            />
+          </li>
+          <li>
+            <p className="main-heading">
+              Score:<span className="span">{count}</span>
+            </p>
+          </li>
+          <li>
+            {' '}
+            <img
+              src="https://assets.ccbp.in/frontend/react-js/match-game-timer-img.png"
+              alt="timer"
+              className="time-logo"
+            />
+          </li>
+          <li>
+            <p className="heading">{sec}</p>
+          </li>
+          <li>
+            {' '}
+            <h1 className="heading">sec</h1>
+          </li>
+        </ul>
         <div className="image-container">
           <img
-            src="https://assets.ccbp.in/frontend/react-js/match-game/dog-thumbnail-img.png"
-            alt="shiva paravathi"
+            src="https://assets.ccbp.in/frontend/react-js/match-game/orange-thumbnail-img.png"
             className="image"
+            alt="thumbnail"
           />
         </div>
         <div className="button-container">
-          <button
-            className="button-1"
-            type="button"
-            onClick={this.onFruitsIMages}
-          >
-            Fruits
-          </button>
-          <button
-            className="button-2"
-            type="button"
-            onClick={this.onAnimalsImages}
-          >
-            Animals
-          </button>
-          <button
-            className="button-3"
-            type="button"
-            onClick={this.onPlacesImages}
-          >
-            Places
-          </button>
+          {tabsList.map(tab => (
+            <button
+              key={tab.tabId}
+              className="button-1"
+              type="button"
+              onClick={() => this.onFruiteAndAnimaAndPlaces(tab.tabId)}
+            >
+              {tab.displayText}
+            </button>
+          ))}
         </div>
-        <div>
-          <ul>
+        <div className="show-container">
+          <ul className="list-images">
             {filterProject.map(eachImage => (
-              <li key={eachImage.id}>
-                <img src={eachImage.thumbnailUrl} alt={eachImage.category} />
+              <li key={eachImage.id} className="list-container">
+                <button
+                  className="button-image"
+                  type="button"
+                  onClick={() => this.onImage(eachImage)}
+                >
+                  <img
+                    src={eachImage.thumbnailUrl}
+                    alt={eachImage.category}
+                    className="list-image"
+                  />
+                </button>
               </li>
             ))}
           </ul>
